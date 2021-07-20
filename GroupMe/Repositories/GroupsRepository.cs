@@ -19,7 +19,14 @@ namespace GroupMe.Repositories
 
         public Group Create(Group data)
         {
-            throw new NotImplementedException();
+            var sql = @"
+            INSERT INTO groups(name, description, img, creatorId)
+            VALUES(@Name, @Description, @Img, @CreatorId);
+            SELECT LAST_INSERT_ID();
+            ";
+            var id = _db.ExecuteScalar<int>(sql, data);
+            data.Id = id;
+            return data;
         }
 
         public List<Group> GetAll()
@@ -42,7 +49,20 @@ namespace GroupMe.Repositories
 
         public Group GetById(int id)
         {
-            throw new NotImplementedException();
+            string sql = @"
+                SELECT 
+                    g.*,
+                    a.*
+                FROM groups g
+                JOIN accounts a ON g.creatorId = a.id
+                WHERE g.id = @id;
+            ";
+
+            return _db.Query<Group, Profile, Group>(sql, (g, p) =>
+              {
+                  g.Creator = p;
+                  return g;
+              }, new { id }).FirstOrDefault();
         }
 
         public Group Update(Group data)

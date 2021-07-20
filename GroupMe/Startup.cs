@@ -1,4 +1,4 @@
- using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -34,15 +34,18 @@ namespace GroupMe
             ConfigureCors(services);
             ConfigureAuth(services);
             services.AddControllers();
-            services.AddControllers();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "GroupMe", Version = "v1" });
             });
             services.AddScoped<IDbConnection>(x => CreateDbConnection());
-            
+
             services.AddScoped<AccountsRepository>();
             services.AddScoped<AccountService>();
+            services.AddTransient<GroupMembersRepository>();
+            services.AddTransient<GroupsRepository>();
+            services.AddTransient<GroupMembersService>();
+            services.AddTransient<GroupsService>();
         }
 
         private void ConfigureCors(IServiceCollection services)
@@ -95,10 +98,10 @@ namespace GroupMe
             }
 
             app.UseHttpsRedirection();
-            
+
             app.UseDefaultFiles();
             app.UseStaticFiles();
-            
+
             app.UseRouting();
 
             app.UseAuthentication();

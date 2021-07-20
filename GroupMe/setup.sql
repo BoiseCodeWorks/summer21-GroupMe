@@ -26,15 +26,15 @@ CREATE TABLE IF NOT EXISTS group_members(
   FOREIGN KEY (accountId) REFERENCES accounts(id) ON DELETE CASCADE,
   FOREIGN KEY (groupId) REFERENCES groups(id) ON DELETE CASCADE
 ) default charset utf8 COMMENT '';
-INSERT INTO
-  groups(name, description, img, creatorId)
-VALUES
-  (
-    "CodeWorks Alumni",
-    "Let's talk code!!!",
-    "//placehold.it/500x500",
-    ""
-  );
+-- INSERT INTO
+--   groups(name, description, img, creatorId)
+-- VALUES
+--   (
+--     "CodeWorks Alumni",
+--     "Let's talk code!!!",
+--     "//placehold.it/500x500",
+--     "60b727ff650c4b5831dffc60"
+--   );
 SELECT
   g.*,
   g.id AS groupId,
@@ -45,3 +45,17 @@ FROM
   JOIN accounts a ON a.id = g.creatorId
 WHERE
   g.id = 1;
+SELECT
+  *
+FROM
+  groups;
+
+
+
+SELECT 
+    gm.*,
+    a.name,
+    a.picture
+FROM group_members gm
+JOIN accounts a ON a.id = gm.accountId
+WHERE groupId = 7;

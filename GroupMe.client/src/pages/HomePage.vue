@@ -1,25 +1,35 @@
 <template>
-  <div class="home flex-grow-1 d-flex flex-column align-items-center justify-content-center">
-    <img src="https://bcw.blob.core.windows.net/public/img/8600856373152463" alt="CodeWorks Logo">
-    <h1 class="my-5 bg-dark text-light p-3 rounded d-flex align-items-center">
-      <span class="mx-2 text-white">Vue 3 Starter</span>
-    </h1>
+  <div>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-lg-4 col-md-6" v-for="g in groups" :key="g.id">
+          <GroupCard :group="g" />
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
+import { computed, onMounted, reactive } from 'vue'
+import { AppState } from '../AppState'
+import { groupsService } from '../services/GroupsService'
+
 export default {
-  name: 'Home'
+  name: 'Home',
+  setup() {
+    onMounted(() => {
+      groupsService.getGroups()
+    })
+    return reactive({
+      account: computed(() => AppState.account),
+      user: computed(() => AppState.user),
+      groups: computed(() => AppState.groups)
+    })
+  }
 }
 </script>
 
 <style scoped lang="scss">
-.home{
-  text-align: center;
-  user-select: none;
-  > img{
-    height: 200px;
-    width: 200px;
-  }
-}
+
 </style>
