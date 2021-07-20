@@ -12,6 +12,7 @@ namespace GroupMe.Models
         public string Img { get; set; }
 
         public string CreatorId { get; set; }
+        // virtual
         public Profile Creator { get; set; }
 
     }

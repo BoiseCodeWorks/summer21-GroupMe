@@ -21,8 +21,8 @@ namespace GroupMe.Repositories
         {
             string sql = @"
             INSERT INTO 
-                group_members(accountId, groupId)
-            VALUES(@AccountId, @GroupId);
+                group_members(accountId, groupId, role)
+            VALUES(@AccountId, @GroupId, @Role);
             SELECT LAST_INSERT_ID();
             ";
             gm.Id = _db.ExecuteScalar<int>(sql, gm);
