@@ -36,7 +36,28 @@ namespace GroupMe.Services
 
         internal List<GroupMember> GetMembers(int id)
         {
-            return _groupMembersRepo.GetMembersByGroupId(id);
+
+            var members = _groupMembersRepo.GetMembersByGroupId(id);
+            return members;
+        }
+
+        internal Group EditGroup(Group groupData, string userId)
+        {
+            var group = _groupRepo.GetById(groupData.Id);
+            if (group == null)
+            {
+                throw new Exception("nope bad id");
+            }
+            // is this right??????
+            if (group.CreatorId != userId)
+            {
+                throw new Exception("nope wrong user NOT YOURS");
+            }
+            group.Name = groupData.Name ?? group.Name;
+            group.Img = groupData.Img ?? group.Img;
+            group.Description = groupData.Description ?? group.Description;
+
+            return _groupRepo.Update(group);
         }
     }
 }

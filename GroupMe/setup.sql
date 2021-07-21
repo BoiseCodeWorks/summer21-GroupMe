@@ -52,10 +52,17 @@ FROM
 
 
 
-SELECT 
-    gm.*,
-    a.name,
-    a.picture
-FROM group_members gm
-JOIN accounts a ON a.id = gm.accountId
-WHERE groupId = 7;
+
+SELECT
+  gm.*, -- every column in the group_members table not every record
+  a.name, -- column name from the accounts table not the name of every account
+  a.picture,
+  a.id
+FROM
+  group_members gm -- a single record in the table
+  JOIN accounts a ON a.id = gm.accountId
+WHERE
+  gm.groupId = 7;
+
+-- groupMembers.filter(gm => gm.accountId == userId)
+

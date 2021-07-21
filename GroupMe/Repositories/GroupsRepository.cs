@@ -67,7 +67,23 @@ namespace GroupMe.Repositories
 
         public Group Update(Group data)
         {
-            throw new NotImplementedException();
+            var sql = @"
+                UPDATE groups
+                    SET
+                    name = @Name,
+                    img = @Img,
+                    description = @Description
+                WHERE id = @Id;
+            ";
+            var rowsAffected = _db.Execute(sql, data);
+            if(rowsAffected > 1){
+                throw new Exception("Ahhhhh that was probably really bad");
+            }
+            if (rowsAffected < 1)
+            {
+                throw new Exception("woops update didn't work no idea why probably a bad id");
+            }
+            return data;
         }
     }
 }

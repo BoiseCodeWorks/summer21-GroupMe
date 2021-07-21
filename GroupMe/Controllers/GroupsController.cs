@@ -46,7 +46,7 @@ namespace GroupMe.Controllers
                 return BadRequest(e.Message);
             }
         }
-        
+
         [HttpGet("{id}/members")]
         public ActionResult<List<GroupMember>> GetMembers(int id)
         {
@@ -83,6 +83,24 @@ namespace GroupMe.Controllers
                 return BadRequest(e.Message);
             }
         }
+
+        [Authorize]
+        [HttpPut("{id}")]
+        public async Task<ActionResult<Group>> EditGroup([FromBody] Group groupData)
+        {
+            try
+            {
+                var userInfo = await HttpContext.GetUserInfoAsync<Account>();
+                Group g = _gs.EditGroup(groupData, userInfo.Id);
+                return Ok(g);
+            }
+            catch (System.Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+
+        }
+
 
 
     }
